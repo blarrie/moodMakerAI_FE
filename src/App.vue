@@ -1,20 +1,28 @@
 <script setup>
 import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+// import TheWelcome from './components/TheWelcome.vue'
+import FormComponent from './components/FormComponent.vue'
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
+  <!-- <header> -->
+    <!-- <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" /> -->
 
-    <div class="wrapper">
+    <!-- <div class="wrapper">
       <HelloWorld msg="You did it!" />
-    </div>
-  </header>
+    </div> -->
+  <!-- </header> -->
 
-  <main>
+  <!-- <main>
     <TheWelcome />
-  </main>
+
+  </main> -->
+  <div style="text-align: center;">
+    <FormComponent />
+
+  </div>
+
+  
 </template>
 
 <style scoped>
@@ -28,7 +36,7 @@ header {
 }
 
 @media (min-width: 1024px) {
-  header {
+  /* header {
     display: flex;
     place-items: center;
     padding-right: calc(var(--section-gap) / 2);
@@ -42,6 +50,6 @@ header {
     display: flex;
     place-items: flex-start;
     flex-wrap: wrap;
-  }
+  } */
 }
 </style>
