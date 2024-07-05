@@ -1,23 +1,59 @@
 <script>
 import "@mdi/font/css/materialdesignicons.css"; // Ensure you are using css-loader
+import axios from "axios";
+import LoadingComponent from "./LoadingComponent.vue";
 
 export default {
   name: 'HomeComponent',
+  components: LoadingComponent,
+  data() {
+    return {
+      videoFile: null
+    }
+  },
+
   methods: {
-    submitForm() {
+    // post form to flask endpoint to upload video
+    async uploadVideo() {
       console.log("Submit button key pressed!");
-      this.$router.push("./download");
+
+      const formData = new FormData();
+      formData.append('file', this.videoFile);
+
+      const path = 'http://127.0.0.1:5000/upload';
+      console.log("Calling Flask Endpoint POST")
+
+      axios.post(path, formData,{
+        headers: {
+          'Content-Type': 'multipart/form-data' 
+        }
+      })
+        .then((res) => {
+          // loading page?
+          console.log("Data submitted: ")
+          console.log(res.data)
+
+
+          this.$router.push("./loading");
+
+        })
+        .catch((error) => {
+          console.error(error)
+        });
+
     },
   },
 };
 </script>
 
 <template>
-  <v-form @submit.prevent="submitForm" class="form">
+  <v-form class="form" @submit.prevent="uploadVideo">
+    <!-- add validation if there is no file uploaded -->
     <v-file-input
       accept="video/*"
       label="Input Video File Here"
       icon="mdi-paperclip"
+      v-model="videoFile"
     >
     </v-file-input>
     
@@ -33,7 +69,6 @@ export default {
     </v-btn>
 
   </v-form>
-
 
 </template>
 
