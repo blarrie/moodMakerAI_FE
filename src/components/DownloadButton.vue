@@ -1,9 +1,62 @@
 <script>
+import "@mdi/font/css/materialdesignicons.css"; // Ensure you are using css-loader
+import axios from 'axios';
+
 export default {
   name: "DownloadButton",
+  data(){
+    return {
+      filename: "test.mp4",
+      snackbar: {
+        visible: false,
+        msg: "",
+        color: 'success'
+      }
+    }
+  },
   methods:{
     downloadVideo() {
-      console.log("Retrieve video with sound");
+      // const path = `http://127.0.0.1:5000/download/${this.filename}`;
+      const path = `http://127.0.0.1:5000/fake-endpoint/${this.filename}`;
+
+
+      axios.get(path)
+      .then((response) => {
+        if (response.data.status === 'success') {
+          const url = response.data.url;
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', this.filename); 
+
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+
+          console.log("File downloaded!")
+
+          this.snackbar.msg = "File downloaded successfully!";
+          this.snackbar.color = "success";
+          this.snackbar.visible = true;
+        } 
+        
+        else {
+          console.log("Error generating link");
+
+          this.snackbar.msg = "Unfortunately we have run into a problem :(. You will be redirected to try again!";
+          this.snackbar.color = "error";
+          this.snackbar.visible = true;
+
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+
+        this.snackbar.msg = "Unfortunately we have run into a problem :(. You will be redirected to try again!";
+        this.snackbar.color = "error";
+        this.snackbar.visible = true;
+        setTimeout(() => {this.$router.push("./"); }, 5000)
+
+      });
     }
   }
 
@@ -13,9 +66,28 @@ export default {
 <template>
   <div>
     <v-btn
-    @click.prevent="downloadVideo()"
+    append-icon="mdi-download"
+    @click="downloadVideo"
     >
         Download here
     </v-btn>
+
+    <v-snackbar v-model="snackbar.visible" :color="snackbar.color"
+    multi-line
+    >
+
+    {{ snackbar.msg }}
+
+    <template v-slot:actions> 
+      <v-btn
+      color="white"
+      variant="text"
+      @click="snackbar.visible = false"
+      >
+      Close
+      </v-btn>
+    </template>
+
+    </v-snackbar>
   </div>
 </template>
