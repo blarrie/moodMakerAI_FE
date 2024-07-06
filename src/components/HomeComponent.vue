@@ -4,12 +4,13 @@ import axios from "axios";
 import LoadingComponent from "./LoadingComponent.vue";
 
 export default {
-  name: 'HomeComponent',
+  name: "HomeComponent",
   components: LoadingComponent,
   data() {
     return {
-      videoFile: null
-    }
+      videoFile: null,
+      fileName: ""
+    };
   },
 
   methods: {
@@ -18,29 +19,30 @@ export default {
       console.log("Submit button key pressed!");
 
       const formData = new FormData();
-      formData.append('file', this.videoFile);
+      formData.append("file", this.videoFile);
 
-      const path = 'http://127.0.0.1:5000/upload';
-      console.log("Calling Flask Endpoint POST")
+    
+      this.fileName = this.videoFile.name;
 
-      axios.post(path, formData,{
-        headers: {
-          'Content-Type': 'multipart/form-data' 
-        }
-      })
+      const path = "http://127.0.0.1:5000/upload";
+      console.log("Calling Flask Endpoint POST");
+
+      axios
+        .post(path, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
         .then((res) => {
           // loading page?
-          console.log("Data submitted: ")
-          console.log(res.data)
+          console.log("Data submitted: ");
+          console.log(res.data);
 
-
-          this.$router.push("./loading");
-
+          this.$router.push({ name: 'Download', params: { filename: this.fileName } });
         })
         .catch((error) => {
-          console.error(error)
+          console.error(error);
         });
-
     },
   },
 };
@@ -56,7 +58,7 @@ export default {
       v-model="videoFile"
     >
     </v-file-input>
-    
+
     <v-btn
       rounded="sm"
       variant="outlined"
@@ -67,9 +69,7 @@ export default {
     >
       Find Music!
     </v-btn>
-
   </v-form>
-
 </template>
 
 <style>
@@ -77,5 +77,4 @@ export default {
   width: 500px;
   text-align: center;
 }
-
 </style>
