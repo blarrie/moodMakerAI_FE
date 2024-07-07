@@ -21,6 +21,8 @@ export default {
     // post form to flask endpoint to upload video
 
     async uploadVideo() {
+      const apiBaseUrl = process.env.VUE_APP_API_BASE_URL
+      
       console.log("Submit button key pressed!");
 
       const formData = new FormData();
@@ -28,10 +30,10 @@ export default {
 
       this.fileName = this.videoFile.name;
       // post form
-      let uploadPath = "http://127.0.0.1:5000/upload";
+      let uploadPath = `${apiBaseUrl}/upload`;
 
       // get music + overlay
-      let overlayPath = `http://127.0.0.1:5000/overlay/${this.fileName}`;
+      let overlayPath = `${apiBaseUrl}/overlay/${this.fileName}`;
 
       const uploadReq = axios.post(uploadPath, formData, {
         headers: {
