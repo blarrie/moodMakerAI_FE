@@ -1,6 +1,6 @@
-#  .
+#  MoodMaker FrontEnd
 
-This template should help get you started developing with Vue 3 in Vite.
+This is the submission from the group EyeLadies for TikTok Jam 2024
 
 ## Recommended IDE Setup
 
