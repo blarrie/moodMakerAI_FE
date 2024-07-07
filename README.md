@@ -27,3 +27,5 @@ npm run dev
 ```sh
 npm run build
 ```
+
+Note: Currently deployed on https://moodmaker-app-db41d8cd5ed4.herokuapp.com/ but not fully functioning due to lack of memory.
