@@ -4,10 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "start": "vite build && serve dist",
-    "preview": "vite preview",
-    "postinstall": "npm install --only=dev && npm run build"
+    "start": "serve dist",
+    "build": "vite build",
+    "heroku-postbuild": "npm run build"
   },
   "dependencies": {
     "axios": "^1.7.2",
