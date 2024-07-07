@@ -29,7 +29,7 @@ export default {
   methods: {
     downloadVideo() {
       const path = `http://127.0.0.1:5000/download/${this.filename}`;
-
+      
       // error testing
       // const path = `http://127.0.0.1:5000/fake-endpoint/${this.filename}`;
 
@@ -56,6 +56,7 @@ export default {
 
             this.snackbar.msg =
               "Unfortunately we have run into a problem :(. You will be redirected to try again!";
+
             this.snackbar.color = "error";
             this.snackbar.visible = true;
           }
@@ -65,10 +66,13 @@ export default {
 
           this.snackbar.msg =
             "Unfortunately we have run into a problem :(. You will be redirected to try again!";
+
           this.snackbar.color = "error";
           this.snackbar.visible = true;
           setTimeout(() => {
-            this.$router.push("./");
+            this.$router.push({
+            name: "Home",
+          });
           }, 5000);
         });
     },
@@ -77,7 +81,7 @@ export default {
 </script>
 
 <template>
-  <div>
+  <div style="text-align: center;">
     <v-btn append-icon="mdi-download" @click="downloadVideo">
       Download here
     </v-btn>
@@ -93,3 +97,5 @@ export default {
     </v-snackbar>
   </div>
 </template>
+
+

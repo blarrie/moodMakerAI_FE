@@ -5,43 +5,69 @@ import LoadingComponent from "./LoadingComponent.vue";
 
 export default {
   name: "HomeComponent",
-  components: LoadingComponent,
+  components: {
+    LoadingComponent,
+  },
   data() {
     return {
       videoFile: null,
-      fileName: ""
+      fileName: "",
+      loading: false,
+      res: []
     };
   },
 
   methods: {
     // post form to flask endpoint to upload video
+
     async uploadVideo() {
       console.log("Submit button key pressed!");
 
       const formData = new FormData();
       formData.append("file", this.videoFile);
 
-    
       this.fileName = this.videoFile.name;
+      // post form
+      let uploadPath = "http://127.0.0.1:5000/upload";
 
-      const path = "http://127.0.0.1:5000/upload";
+      // get music + overlay
+      let overlayPath = `http://127.0.0.1:5000/overlay/${this.fileName}`;
+
+      const uploadReq = axios.post(uploadPath, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      const overlayReq = axios.get(overlayPath);
+
       console.log("Calling Flask Endpoint POST");
+      this.loading = true;
 
       axios
-        .post(path, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((res) => {
-          // loading page?
-          console.log("Data submitted: ");
-          console.log(res.data);
+        .all([uploadReq, overlayReq])
+        .then(
+          axios.spread((...responses) => {
+            // Response from posts
+            const uploadRes = responses[0];
+            const overlayRes = responses[1];
+            this.res[0] = uploadRes.data;
+            this.res[1] = overlayRes.data;
 
-          this.$router.push({ name: 'Download', params: { filename: this.fileName } });
+            if (responses) {
+              this.$router.push({
+                name: "Download",
+                params: { filename: this.fileName },
+              });
+            }
+            console.log(this.res);
+          })
+        )
+        .catch((errors) => {
+          console.error(errors);
         })
-        .catch((error) => {
-          console.error(error);
+        .finally(() => {
+          this.loading = false;
         });
     },
   },
@@ -49,27 +75,35 @@ export default {
 </script>
 
 <template>
-  <v-form class="form" @submit.prevent="uploadVideo">
-    <!-- add validation if there is no file uploaded -->
-    <v-file-input
-      accept="video/*"
-      label="Input Video File Here"
-      icon="mdi-paperclip"
-      v-model="videoFile"
-    >
-    </v-file-input>
+  <div>
+    <template v-if="loading">
+      <LoadingComponent />
+    </template>
 
-    <v-btn
-      rounded="sm"
-      variant="outlined"
-      color="red"
-      append-icon="mdi-music-box-multiple-outline"
-      type="submit"
-      class="button"
-    >
-      Find Music!
-    </v-btn>
-  </v-form>
+    <template v-else>
+      <v-form class="form" @submit.prevent="uploadVideo">
+        <!-- add validation if there is no file uploaded -->
+        <v-file-input
+          accept="video/*"
+          label="Input Video File Here"
+          icon="mdi-paperclip"
+          v-model="videoFile"
+        >
+        </v-file-input>
+
+        <v-btn
+          rounded="sm"
+          variant="outlined"
+          color="red"
+          append-icon="mdi-music-box-multiple-outline"
+          type="submit"
+          class="button"
+        >
+          Find Music!
+        </v-btn>
+      </v-form>
+    </template>
+  </div>
 </template>
 
 <style>
