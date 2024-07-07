@@ -28,7 +28,8 @@ export default {
 
   methods: {
     downloadVideo() {
-      const path = `http://127.0.0.1:5000/download/${this.filename}`;
+      const apiBaseUrl = process.env.VUE_APP_API_BASE_URL
+      const path = `${apiBaseUrl}/download/${this.filename}`;
       
       // error testing
       // const path = `http://127.0.0.1:5000/fake-endpoint/${this.filename}`;
