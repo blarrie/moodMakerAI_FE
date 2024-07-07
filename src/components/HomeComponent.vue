@@ -31,7 +31,7 @@ export default {
       this.fileName = this.videoFile.name;
       // post form
       let uploadPath = `${apiBaseUrl}/upload`;
-
+      console.log("uploadPath: ",uploadPath)
       // get music + overlay
       let overlayPath = `${apiBaseUrl}/overlay/${this.fileName}`;
 
