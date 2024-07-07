@@ -28,7 +28,9 @@ export default {
 
   methods: {
     downloadVideo() {
-      const apiBaseUrl = process.env.VUE_APP_API_BASE_URL
+      // const apiBaseUrl = "https://moodmaker-flask-backend-944549f9ef80.herokuapp.com"
+      const apiBaseUrl = "http://127.0.0.1:5000"
+
       const path = `${apiBaseUrl}/download/${this.filename}`;
       
       // error testing

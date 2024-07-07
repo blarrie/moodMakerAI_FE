@@ -21,8 +21,8 @@ export default {
     // post form to flask endpoint to upload video
 
     async uploadVideo() {
-      const apiBaseUrl = "https://moodmaker-flask-backend-944549f9ef80.herokuapp.com"
-      
+      // const apiBaseUrl = "https://moodmaker-flask-backend-944549f9ef80.herokuapp.com"
+      const apiBaseUrl = "http://127.0.0.1:5000"
       console.log("Submit button key pressed!");
 
       const formData = new FormData();
