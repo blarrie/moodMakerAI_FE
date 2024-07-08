@@ -22,7 +22,9 @@ export default {
 
     async uploadVideo() {
       // const apiBaseUrl = "https://moodmaker-flask-backend-944549f9ef80.herokuapp.com"
-      const apiBaseUrl = "http://127.0.0.1:5000"
+      const apiBaseUrl = import.meta.env.VITE_APP_API_BASE_URL;
+      
+      console.log("BaseURL: ",apiBaseUrl);
       console.log("Submit button key pressed!");
 
       const formData = new FormData();
